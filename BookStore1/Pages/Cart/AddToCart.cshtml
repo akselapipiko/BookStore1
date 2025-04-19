@@ -1,0 +1,17 @@
+﻿@page
+@model BookStore1.Pages.Cart.AddToCartModel
+@{
+    Layout = null; 
+}
+<div class="container text-center mt-5">
+   
+    <h2>✅ Book added to your cart!</h2>
+    <p>Redirecting you back to the store...</p>
+    <a href="/Index" class="btn btn-primary mt-3">Back to Store</a>
+</div>
+
+<script>
+    setTimeout(() => {
+        window.location.href = "/Index";
+    }, 2000); // Redirect after 2 seconds
+</script>

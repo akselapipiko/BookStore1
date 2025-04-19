@@ -1,0 +1,413 @@
+﻿@page
+@model BookStore1.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "IBookList";
+    var genres = Model.Books.Select(b => b.Genre).Distinct().ToList();
+}
+
+<!-- Custom Styles -->
+<style>
+    html, body {
+        height: 100%;
+        overflow: auto;
+    }
+    body {
+        background: #fff8e6;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+    }
+
+    /* .carousel { */
+    /*     background: rgba(255, 255, 255, 0.95); */
+    /*     border-radius: 15px; */
+    /*     padding: 10px; */
+    /*     box-shadow: 0 6px 12px rgba(0,0,0,0.15); */
+    /*     max-width: 600px; */
+    /*     margin: auto; */
+    /* } */
+
+    .genre-icons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 25px;
+        margin: 40px auto;
+    }
+
+    .genre-icon {
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+        .genre-icon:hover {
+            transform: scale(1.1);
+        }
+
+    .circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #e3f6f5, #bae8e8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        transition: all 0.3s ease;
+    }
+
+    .label {
+        margin-top: 8px;
+        font-size: 1rem;
+        color: #444;
+    }
+
+    .book-card .card {
+        height: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .book-card .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    .card-img-top {
+        height: 280px;
+        object-fit: cover;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #555;
+        border-top: none;
+    }
+
+    @@media (min-width: 768px) {
+        .book-card
+
+    {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+
+    }
+
+</style>
+<style>
+    .customer-reviews {
+    background-color: #fdf6e3;
+    padding: 4rem 1rem;
+    border-top: 2px solid #e0e0e0;
+}
+
+.customer-reviews h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.customer-reviews .card {
+    border: none;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.customer-reviews .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.customer-reviews .card-body {
+    padding: 1.5rem;
+}
+
+.customer-reviews .card-text {
+    font-size: 1rem;
+    color: #555;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.customer-reviews .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #007BFF;
+    margin-top: 1rem;
+}
+
+</style>
+
+
+<!-- Hero Full-Width Carousel (Fixed to truly span full width) -->
+<div class="hero-carousel" style="
+         position: relative;
+         width: 100vw;
+         left: 50%;
+         right: 50%;
+         margin-left: -50vw;
+         margin-right: -50vw;
+         overflow: hidden;
+         margin-bottom: 2rem;
+         margin-top : -15px;"|>
+    <div id="heroBannerCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/css/136194.jpg"
+                     class="d-block"
+                     alt="Firebird Banner"
+                     style="width: 100vw; height: 400px; object-fit: cover;">
+            </div>
+            <div class="carousel-item">
+                <img src="~/css/923546-vkamlhivdb-1558355702.png"
+                     class="d-block"
+                     alt="Soap Lake Banner"
+                     style="width: 100vw; height: 400px; object-fit: cover;">
+            </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroBannerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroBannerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+
+
+
+<!-- Genre Icons as Clickable Links -->
+<style>
+    .genre-icons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .genre-icon {
+        text-align: center;
+        text-decoration: none;
+        color: #007BFF;
+        width: 80px;
+        transition: transform 0.2s ease;
+    }
+
+    .genre-icon:hover {
+        transform: scale(1.1);
+    }
+
+    .genre-icon .circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #e0f0ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin: 0 auto 0.5rem;
+        border: 2px solid #007BFF;
+        transition: background-color 0.2s, border 0.2s;
+    }
+
+    .genre-icon .label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #0056b3;
+    }
+
+    .genre-icon.active .circle {
+        background-color: #cce4ff;
+        border-color: #0056b3;
+    }
+</style>
+
+<section class="genre-icons">
+    <a href="#" class="genre-icon" data-genre="All" title="All Genres">
+        <div class="circle">🌐</div>
+        <div class="label">All</div>
+    </a>
+    @foreach (var genre in genres)
+    {
+        var icon = genre switch
+        {
+            "Fantasy" => "🐉",
+            "Romance" => "💕",
+            "Science Fiction" => "🚀",
+            "Mystery" => "🕵️",
+            "Horror" => "👻",
+            "History" => "📜",
+            "Biography" => "🧑‍🎓",
+            "Philosophy" => "🧠",
+            _ => "📚"
+        };
+                    <a href="#" class="genre-icon" data-genre="@genre" title="@genre">
+                        <div class="circle">@icon</div>
+                        <div class="label">@genre</div>
+                    </a>
+    }
+</section>
+
+<div class="container mt-5">
+    <div class="row d-flex flex-wrap justify-content-center" id="bookCardsContainer">
+        @foreach (var book in Model.Books)
+        {
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4 book-card" data-genre="@book.Genre" style="display: none;">
+                <div class="card shadow-sm">
+                    <img class="card-img-top" src="@book.ImageUrl" alt="@book.Title" data-bs-toggle="tooltip" title="@book.Description" />
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                        <!-- Add Author below the title -->
+                        <p class="card-text text-muted">@book.Author</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        @book.Genre
+                        <p class="card-text font-weight-bold">$@book.Price.ToString("0.00")</p>
+                    </div>
+                    <form method="post" asp-page="/Cart/AddToCart" class="text-center mt-3">
+                        <input type="hidden" name="bookId" value="@book.Id" />
+                        <button type="submit" class="btn btn-pink rounded-circle shadow-sm" title="Add to Cart" style="background-color: #ff69b4; border: none; width: 48px; height: 48px;">
+                            <i class="fas fa-cart-plus text-white"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const genreButtons = document.querySelectorAll(".genre-icon");
+        const cards = document.querySelectorAll(".book-card");
+
+        function filterBooks(genre) {
+            cards.forEach(card => {
+                const cardGenre = card.getAttribute("data-genre");
+                card.style.display = (genre === "All" || cardGenre === genre) ? "block" : "none";
+            });
+
+            // Highlight selected genre
+            genreButtons.forEach(btn => btn.classList.remove("active"));
+            document.querySelector(.genre-icon[data-genre="${genre}"])?.classList.add("active");
+        }
+
+        // Add click event to each icon
+        genreButtons.forEach(button => {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
+                const selectedGenre = this.getAttribute("data-genre");
+                filterBooks(selectedGenre);
+            });
+        });
+
+        // Show all books by default on load
+        filterBooks("All");
+    });
+</script> 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const genreButtons = document.querySelectorAll(".genre-icon");
+        const cards = document.querySelectorAll(".book-card");
+
+        genreButtons.forEach(button => {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
+                const selectedGenre = this.getAttribute("data-genre");
+
+                cards.forEach(card => {
+                    const cardGenre = card.getAttribute("data-genre");
+                    if (selectedGenre === "All" || cardGenre === selectedGenre) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<section class="customer-reviews my-5">
+    <h2 class="text-center mb-4">What Our Customers Say</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">"Absolutely thrilled with the selection and service! Found books I couldn't locate anywhere else."</p>
+                    <h5 class="card-title mt-3">— Emily R.</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">"Fast delivery and excellent customer support. Highly recommend this bookstore to all readers."</p>
+                    <h5 class="card-title mt-3">— Michael T.</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">"A delightful experience! The curated recommendations introduced me to new favorite authors."</p>
+                    <h5 class="card-title mt-3">— Sophia L.</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+<!-- Bootstrap JS -->       

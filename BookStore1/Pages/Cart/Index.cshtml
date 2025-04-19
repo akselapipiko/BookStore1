@@ -1,0 +1,74 @@
+﻿@page
+@model BookStore1.Pages.Cart.IndexModel
+@{
+    ViewData["Title"] = "Your Cart";
+}
+<style>
+    .btn-outline-pink {
+        color: #ff69b4;
+        border: 2px solid #ff69b4;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-pink:hover {
+            background-color: #ff69b4;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+        }
+
+</style>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">🛒 Your Shopping Cart</h2>
+
+    @if (Model.Cart.Any())
+    {
+        <div class="row d-flex flex-wrap justify-content-center" id="cartItemsContainer">
+            @foreach (var item in Model.Cart)
+            {
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card shadow-sm">
+                        <img class="card-img-top" src="@item.ImageUrl" alt="@item.Title">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Title</h5>
+                            <p class="card-text">Quantity: @item.Quantity</p>
+                            <p class="card-text font-weight-bold">$@item.Price</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Total: $@(item.Price * item.Quantity)
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4">
+            <h4>Total Price: $@Model.Total.ToString("0.00")</h4>
+
+            <a href="/Index" class="btn btn-outline-pink mx-2 mt-3">
+                ← Continue Shopping
+            </a>
+
+            <a href="/Cart/Checkout" class="btn btn-outline-pink mx-2 mt-3">
+                 Confirm Payment
+            </a>
+        </div>
+
+    }
+    else
+    {
+        <div class="text-center mt-5">
+            <h4>Your cart is empty 🛍️</h4>
+            <a href="/Index" class="btn btn-primary mt-3">Go to Store</a>
+        </div>
+    }
+    @section Scripts {
+        <script>
+            // Initialize Bootstrap tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        </script>
+}
+</div>
+
